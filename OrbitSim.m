@@ -26,6 +26,8 @@ MarsPath = makeBodyPath('red','Mars');
 
 ShuttleTestPath = makeShuttlePath('green','Shuttle');
 
+SaveGif = false;
+
 %% Sim Run
 for i=1:length(UT)
     EarthPosition = Earth.PositionCalc(UT(i));
@@ -37,14 +39,16 @@ for i=1:length(UT)
     addpoints(ShuttleTestPath,ShuttleTestPosition(1),ShuttleTestPosition(2));
     
     drawnow
-    frame = getframe(h);
-    im = frame2im(frame);
-    [imind,cm] = rgb2ind(im,256);
-    % Write to the GIF File
-    if i == 1
-        imwrite(imind,cm,gifName,'gif','DelayTime',0.1,'Loopcount',inf);
-    else
-        imwrite(imind,cm,gifName,'gif','DelayTime',0.1,'WriteMode','append');
+    if SaveGif
+        frame = getframe(h);
+        im = frame2im(frame);
+        [imind,cm] = rgb2ind(im,256);
+        % Write to the GIF File
+        if i == 1
+            imwrite(imind,cm,gifName,'gif','DelayTime',0.1,'Loopcount',inf);
+        else
+            imwrite(imind,cm,gifName,'gif','DelayTime',0.1,'WriteMode','append');
+        end
     end
 end
 

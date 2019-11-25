@@ -11,6 +11,7 @@ classdef Shuttle
         OrbitalPeriod           % sec
         Apoapsis                % m
         Periapsis               % m
+        DeltaV                  % m/s
     end
     
     methods
@@ -23,8 +24,32 @@ classdef Shuttle
             obj.MeanAngMotion = sqrt(obj.parentMU/(obj.SMA^3));
             obj.MeanAnomalyAtEpoch = 0 - obj.MeanAngMotion*UT*180/pi;
             obj.OrbitalPeriod = 2*pi*sqrt((obj.SMA)^3/obj.parentMU);
+            if OriginBody.SMA > TargetBody.SMA
+                obj.Apoapsis  = OriginBody.SMA;
+                obj.Periapsis = TargetBody.SMA;
+            else
+                obj.Periapsis = OriginBody.SMA;
+                obj.Apoapsis  = TargetBody.SMA;
+            end
             
+            DeltaV1 = abs(OriginBody.OrbitalSpeed - obj.VisVia(OriginBody.SMA));
+            DeltaV2 = abs(TargetBody.OrbitalSpeed - obj.VisVia(TargetBody.SMA));
+            obj.DeltaV = DeltaV1 + DeltaV2;
         end
+        
+        function OrbitalSpeed = VisVia(obj,R)
+            OrbitalSpeed = sqrt(obj.parentMU*(2/R - 1/obj.SMA));
+        end
+        
+        function TransferCalc(obj,OriginBody,TargetBody,UT)
+            % Calculate ideal Phase Angle
+            %   for now use constant
+            Ideal_PA = 44.3453;
+            
+            % Determine current Phase Angle
+            
+            
+            
         function EccAnomaly = BisectionSolver_EccAno(obj,MA)
             EA = pi;
             Min = 0;
