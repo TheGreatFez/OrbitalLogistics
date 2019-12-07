@@ -3,10 +3,12 @@ clear
 T0 = 0; % sec
 AU = 1.495978707E11; % m
 Sun_MU = 1.32712440018E20; % m^3/
-Earth = Body(AU,Sun_MU,0);
-Mars  = Body(1.5237*AU,Sun_MU,44.3453);
+AAA = 44.3453;
+BBB = 2;
+Earth = Body(AU,Sun_MU,0,6371000,5.972E24);
+Mars  = Body(1.5237*AU,Sun_MU,45,3389500,6.39E23);
 ShuttleTest = Shuttle(Earth,Mars,0);
-
+% Earth --> Mars Phase Angle: 44.3453
 UT = linspace(0,ShuttleTest.OrbitalPeriod/2);
 
 % Graph settings
